@@ -1,1 +1,1 @@
-# pyqt-builder
+# Script Path Fixer
