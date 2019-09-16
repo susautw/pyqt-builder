@@ -29,7 +29,7 @@ def get_script_path(interpreter_path: pathlib.Path, script_file: pathlib.Path):
         if is_interpreter_in_scripts(interpreter_path) \
         else path / interpreter_path / 'Scripts' / script_file
 
-    assert path.isfile(), "Script not found."
+    assert path.is_file(), "Script not found."
 
     return path
 
