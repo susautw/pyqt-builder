@@ -6,12 +6,11 @@ import pathlib
 def main():
     args = get_args()
 
-    path = pathlib.Path()
-    path = path / args.interpreter / args.script \
-        if is_interpreter_in_scripts(args.interpreter) \
-        else path / args.interpreter / 'Scripts' / args.script
+    interpreter_path = pathlib.Path(args.interpreter)
+    script_file = pathlib.Path(args.script)
 
-    command = "%s %s" % (str(path), ' '.join(args.va_list))
+    scripts_path = get_scripts_path(interpreter_path, script_file)
+    command = "%s %s" % (str(scripts_path), ' '.join(args.va_list))
 
     exit(os.system(command))
 
@@ -24,8 +23,19 @@ def get_args():
     return parser.parse_args()
 
 
-def is_interpreter_in_scripts(interpreter_path):
-    return os.path.split(interpreter_path)[-1] == 'Scripts'
+def get_scripts_path(interpreter_path: pathlib.Path, script_file: pathlib.Path):
+    path = pathlib.Path()
+    path = path / interpreter_path / script_file \
+        if is_interpreter_in_scripts(interpreter_path) \
+        else path / interpreter_path / 'Scripts' / script_file
+
+    assert path.isfile(), "Script not found."
+
+    return path
+
+
+def is_interpreter_in_scripts(interpreter_path: pathlib.Path):
+    return interpreter_path.parts[-1] == 'Scripts'
 
 
 if __name__ == '__main__':
