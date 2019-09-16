@@ -29,8 +29,6 @@ def get_script_path(interpreter_path: pathlib.Path, script_file: pathlib.Path):
         if is_interpreter_in_scripts(interpreter_path) \
         else path / interpreter_path / 'Scripts' / script_file
 
-    assert path.is_file(), "Script not found."
-
     return path
 
 
@@ -39,6 +37,8 @@ def is_interpreter_in_scripts(interpreter_path: pathlib.Path):
 
 
 def execute_script(script_path: pathlib.Path, *args):
+    assert script_path.is_file(), "Script not found."
+
     command = '%s %s' % (str(script_path), ' '.join(args))
     return os.system(command)
 
