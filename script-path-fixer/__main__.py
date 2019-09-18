@@ -11,7 +11,6 @@ def main():
     script_file = pathlib.Path(args.script)
 
     script_path = get_script_path(interpreter_path, script_file)
-
     exit_code = execute_script(script_path, *args.va_list)
     exit(exit_code)
 
@@ -40,8 +39,12 @@ def is_interpreter_in_scripts_directory(interpreter_path: pathlib.Path):
 def execute_script(script_path: pathlib.Path, *args):
     assert script_path.is_file(), "Script not found."
 
-    command = '%s %s' % (str(script_path), ' '.join(args))
+    command = get_command(script_path, args)
     return os.system(command)
+
+
+def get_command(script_path: pathlib.Path, args):
+    return '%s %s' % (str(script_path), ' '.join(args))
 
 
 if __name__ == '__main__':
